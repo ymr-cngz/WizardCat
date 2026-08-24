@@ -1,4 +1,12 @@
+import os
+import sys
 import webbrowser
+
+# Ensure project root directory is in sys.path when running main_window.py directly
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import (
     QColor,
@@ -776,3 +784,17 @@ class WizardCat(QWidget):
         if self.room_mgr:
             self.room_mgr.leave_room()
         super().closeEvent(event)
+
+
+if __name__ == "__main__":
+    import signal
+    from PySide6.QtWidgets import QApplication
+
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+    app = QApplication(sys.argv)
+    app.setQuitOnLastWindowClosed(True)
+    window = WizardCat()
+    window.show()
+    window.setFocus()
+    sys.exit(app.exec())
+
